@@ -1,4 +1,7 @@
 # Miscellaneous
+*.g.dart
+*.gr.dart
+**/pubspec.lock
 *.class
 *.log
 *.pyc
