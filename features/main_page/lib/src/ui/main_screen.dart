@@ -4,7 +4,9 @@ import 'package:domain/domain.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:main_page/src/bloc/main_page_bloc.dart';
 import 'package:main_page/src/ui/widgets/photo_tile.dart';
+import 'package:navigation/navigation.dart';
 
+@RoutePage()
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
