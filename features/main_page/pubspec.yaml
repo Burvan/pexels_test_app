@@ -16,4 +16,11 @@ dev_dependencies:
     sdk: flutter
   flutter_lints: ^5.0.0
 
+  core:
+    path: ../../core
+  domain:
+    path: ../../domain
+  core_ui:
+    path: ../../core_ui
+
 flutter:
