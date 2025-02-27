@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:main_page/main_page.dart';
 import 'package:main_page/src/bloc/main_page_bloc.dart';
 import 'package:main_page/src/ui/widgets/photo_tile.dart';
+import 'package:navigation/navigation.dart';
 
+@RoutePage()
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
@@ -81,7 +84,13 @@ class _MainScreenState extends State<_MainScreen> {
                     } else {
                       return PhotoTile(
                         photo: state.photos.elementAt(index),
-                        onTap: () {},
+                        onTap: () {
+                          context.navigateTo(
+                              DetailedPhotoRoute(
+                                photo: state.photos[index],
+                              ),
+                          );
+                        },
                       );
                     }
                   },

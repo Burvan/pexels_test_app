@@ -1,9 +1,12 @@
 class AppPadding {
+  static const double padding5 = 5.0;
   static const double padding10 = 10.0;
+  static const double padding20 = 20.0;
 }
 
 class AppBorderRadius {
   static const double borderRadius8 = 8.0;
+  static const double borderRadius30 = 30.0;
 }
 
 class AppSize {
