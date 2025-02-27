@@ -21,8 +21,9 @@ class HomePage extends StatelessWidget {
       appBarBuilder: (_, TabsRouter tabsRouter) {
         return AppBar(
           backgroundColor: AppColors.turquoise,
-          title: const Text(
+          title: Text(
             AppConstants.appName,
+            style: AppTextTheme.font21Bold,
           ),
           centerTitle: true,
         );

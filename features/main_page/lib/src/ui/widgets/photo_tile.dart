@@ -31,12 +31,9 @@ class PhotoTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(
                       AppBorderRadius.borderRadius8,
                     ),
-                    child: AspectRatio(
-                      aspectRatio: AppScale.scale1,
-                      child: Image.network(
-                        photo.src.medium,
-                        fit: BoxFit.cover,
-                      ),
+                    child: Wallpaper(
+                      photoPath: photo.src.medium,
+                      id: photo.id,
                     ),
                   ),
                 ),
