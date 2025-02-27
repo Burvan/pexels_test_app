@@ -27,6 +27,12 @@ class HomePage extends StatelessWidget {
           centerTitle: true,
         );
       },
+      bottomNavigationBuilder: (_, TabsRouter tabsRouter) {
+        return AppBottomNavigationBar(
+          selectedIndex: tabsRouter.activeIndex,
+          onTabChange: tabsRouter.setActiveIndex,
+        );
+      },
     );
   }
 }
