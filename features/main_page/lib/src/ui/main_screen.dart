@@ -16,6 +16,8 @@ class MainScreen extends StatelessWidget {
     return BlocProvider<MainPageBloc>(
       create: (_) => MainPageBloc(
         getTrendingPhotosUseCase: appLocator.get<GetTrendingPhotosUseCase>(),
+        savePhotoToGalleryUseCase: appLocator.get<SavePhotoToGalleryUseCase>(),
+        sharePhotoUseCase: appLocator.get<SharePhotoUseCase>()
       ),
       child: const _MainScreen(),
     );
@@ -85,8 +87,10 @@ class _MainScreenState extends State<_MainScreen> {
                       return PhotoTile(
                         photo: state.photos.elementAt(index),
                         onTap: () {
+                          final MainPageBloc bloc = context.read<MainPageBloc>();
                           context.navigateTo(
                               DetailedPhotoRoute(
+                                bloc: bloc,
                                 photo: state.photos[index],
                               ),
                           );
