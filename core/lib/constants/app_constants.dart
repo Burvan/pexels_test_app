@@ -6,4 +6,7 @@ class AppConstants {
   static const String photoBy = 'Photo by ';
   static const String unknownPhotographer = 'unknown photographer';
   static const String noDescription = 'No description';
+  static const String successfulPhotoSaving =
+      'The photo successfully saved to gallery';
+  static const String permissionDenied = 'Permission denied';
 }

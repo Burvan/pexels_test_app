@@ -13,6 +13,12 @@ class AppTextTheme {
     fontWeight: FontWeight.bold,
   );
 
+  static const TextStyle font19WhiteBold = TextStyle(
+    fontSize: 19,
+    color: AppColors.white,
+    fontWeight: FontWeight.bold,
+  );
+
   static const TextStyle font21Bold = TextStyle(
     fontSize: 21,
     fontWeight: FontWeight.bold,
