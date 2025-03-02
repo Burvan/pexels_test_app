@@ -3,6 +3,7 @@ library domain;
 ///Models
 export 'models/photo/photo.dart';
 export 'models/photo/src.dart';
+export 'models/params/fetchPhotosParams.dart';
 
 ///Repositories
 export 'repositories/photo_repository.dart';
