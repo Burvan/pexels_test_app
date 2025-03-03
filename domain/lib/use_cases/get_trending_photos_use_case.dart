@@ -1,6 +1,8 @@
 import 'package:domain/domain.dart';
+import 'package:domain/models/params/fetchPhotosParams.dart';
 
-class GetTrendingPhotosUseCase implements FutureUseCase<List<Photo>, int> {
+class GetTrendingPhotosUseCase
+    implements FutureUseCase<List<Photo>, FetchPhotosParams> {
   final PhotoRepository _photoRepository;
 
   GetTrendingPhotosUseCase({
@@ -8,7 +10,12 @@ class GetTrendingPhotosUseCase implements FutureUseCase<List<Photo>, int> {
   }) : _photoRepository = photoRepository;
 
   @override
-  Future<List<Photo>> execute(int input) {
-    return _photoRepository.getTrendingPhotos(page: input);
+  Future<List<Photo>> execute(FetchPhotosParams input) async {
+    return _photoRepository.getTrendingPhotos(
+      FetchPhotosParams(
+        page: input.page,
+        query: input.query,
+      ),
+    );
   }
 }

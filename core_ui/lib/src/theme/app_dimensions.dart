@@ -10,6 +10,7 @@ class AppBorderRadius {
 }
 
 class AppSize {
+  static const double size2 = 2.0;
   static const double size4 = 4.0;
   static const double size8 = 8.0;
 }

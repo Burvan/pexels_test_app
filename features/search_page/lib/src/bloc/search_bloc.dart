@@ -1,40 +1,47 @@
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 
-part 'main_page_state.dart';
-part 'main_page_event.dart';
+part 'search_event.dart';
+part 'search_state.dart';
 
-class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
+class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final GetTrendingPhotosUseCase _getTrendingPhotosUseCase;
-
-  MainPageBloc({
+  SearchBloc({
     required GetTrendingPhotosUseCase getTrendingPhotosUseCase,
   })  : _getTrendingPhotosUseCase = getTrendingPhotosUseCase,
-        super(const MainPageState.empty()) {
-    on<InitEvent>(_onInit);
-    on<GetTrendingPhotosNextPageEvent>(_onGetTrendingPhotos);
-
-    add(const InitEvent());
+        super(const SearchState.empty()) {
+    on<SearchPhotosEvent>(_onSearchPhotos);
   }
 
-  void _onInit(
-    InitEvent event,
-    Emitter<MainPageState> emit,
-  ) {
-    add(const GetTrendingPhotosNextPageEvent());
-  }
-
-  Future<void> _onGetTrendingPhotos(
-    GetTrendingPhotosNextPageEvent event,
-    Emitter<MainPageState> emit,
+  Future<void> _onSearchPhotos(
+    SearchPhotosEvent event,
+    Emitter<SearchState> emit,
   ) async {
-    if (state.isEndOfList || state.isLoading) return;
-    emit(state.copyWith(isLoading: true));
+    if (event.query != state.query) {
+      emit(
+        state.copyWith(
+          photos: <Photo>[],
+          query: event.query,
+          currentPage: 1,
+          isLoading: true,
+          isEndOfList: false,
+        ),
+      );
+    } else if (state.isEndOfList || state.isLoading) {
+      return;
+    } else {
+      emit(
+        state.copyWith(
+          isLoading: true,
+        ),
+      );
+    }
 
     try {
       List<Photo> photos = await _getTrendingPhotosUseCase.execute(
         FetchPhotosParams(
           page: state.currentPage,
+          query: event.query,
         ),
       );
 
@@ -50,12 +57,13 @@ class MainPageBloc extends Bloc<MainPageEvent, MainPageState> {
           isEndOfList: photos.isEmpty,
         ),
       );
-
     } on ApiException catch (_) {
-      emit(state.copyWith(
-        isLoading: false,
-        errorMessage: 'No such photos',
-      ));
+      emit(
+        state.copyWith(
+          isLoading: false,
+          errorMessage: 'No such photos',
+        ),
+      );
     } catch (e) {
       emit(
         state.copyWith(

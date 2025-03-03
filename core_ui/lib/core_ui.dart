@@ -9,3 +9,6 @@ export 'src/widgets/custom_bottom_navigation_bar.dart';
 export 'src/widgets/wallpaper.dart';
 export 'src/widgets/selected_wallpaper.dart';
 export 'src/widgets/custom_icon_button.dart';
+export 'src/widgets/photo_grid.dart';
+export 'src/widgets/photo_tile.dart';
+export 'src/widgets/custom_search_field.dart';

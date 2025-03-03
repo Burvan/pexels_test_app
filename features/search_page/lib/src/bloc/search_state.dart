@@ -1,49 +1,55 @@
-part of 'main_page_bloc.dart';
+part of 'search_bloc.dart';
 
-class MainPageState extends Equatable {
+class SearchState extends Equatable {
   final List<Photo> photos;
-  final int currentPage;
   final bool isLoading;
   final bool isEndOfList;
+  final int currentPage;
   final String? errorMessage;
+  final String? query;
 
-  const MainPageState({
+  const SearchState({
     required this.photos,
-    required this.currentPage,
     required this.isLoading,
     required this.isEndOfList,
+    required this.currentPage,
     this.errorMessage,
+    this.query,
   });
 
-  const MainPageState.empty()
+  const SearchState.empty()
       : photos = const <Photo>[],
-        currentPage = 1,
         isLoading = false,
         isEndOfList = false,
-        errorMessage = null;
+        currentPage = 1,
+        errorMessage = null,
+        query = null;
 
-  MainPageState copyWith({
+  SearchState copyWith({
     List<Photo>? photos,
-    int? currentPage,
     bool? isLoading,
     bool? isEndOfList,
+    int? currentPage,
     String? errorMessage,
+    String? query,
   }) {
-    return MainPageState(
+    return SearchState(
       photos: photos ?? this.photos,
-      currentPage: currentPage ?? this.currentPage,
       isLoading: isLoading ?? this.isLoading,
       isEndOfList: isEndOfList ?? this.isEndOfList,
+      currentPage: currentPage ?? this.currentPage,
       errorMessage: errorMessage ?? this.errorMessage,
+      query: query ?? this.query,
     );
   }
 
   @override
   List<Object?> get props => [
         photos,
-        currentPage,
         isLoading,
         isEndOfList,
+        currentPage,
         errorMessage,
+        query,
       ];
 }

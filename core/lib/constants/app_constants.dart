@@ -9,4 +9,6 @@ class AppConstants {
   static const String successfulPhotoSaving =
       'The photo successfully saved to gallery';
   static const String permissionDenied = 'Permission denied';
+  static const String search = 'Search';
+  static const String noResultsFound = 'No results found';
 }

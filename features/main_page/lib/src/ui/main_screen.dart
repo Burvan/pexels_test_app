@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:core/core.dart';
 import 'package:domain/domain.dart';
 import 'package:core_ui/core_ui.dart';
-import 'package:main_page/main_page.dart';
+import 'package:home/home.dart';
 import 'package:main_page/src/bloc/main_page_bloc.dart';
-import 'package:main_page/src/ui/widgets/photo_tile.dart';
 import 'package:navigation/navigation.dart';
 
 @RoutePage()
@@ -16,98 +15,52 @@ class MainScreen extends StatelessWidget {
     return BlocProvider<MainPageBloc>(
       create: (_) => MainPageBloc(
         getTrendingPhotosUseCase: appLocator.get<GetTrendingPhotosUseCase>(),
-        savePhotoToGalleryUseCase: appLocator.get<SavePhotoToGalleryUseCase>(),
-        sharePhotoUseCase: appLocator.get<SharePhotoUseCase>()
       ),
       child: const _MainScreen(),
     );
   }
 }
 
-class _MainScreen extends StatefulWidget {
+class _MainScreen extends StatelessWidget {
   const _MainScreen({super.key});
 
   @override
-  State<_MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<_MainScreen> {
-  final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(_onScroll);
-  }
-
-  @override
-  void dispose() {
-    _scrollController.dispose();
-    super.dispose();
-  }
-
-  bool get _isBottom {
-    if (!_scrollController.hasClients) return false;
-    final maxScroll = _scrollController.position.maxScrollExtent;
-    final currentScroll = _scrollController.offset;
-    return currentScroll >= maxScroll - 100;
-  }
-
-  void _onScroll() {
-    if (_isBottom) {
-      context.read<MainPageBloc>().add(
-            GetTrendingPhotosNextPageEvent(),
-          );
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainPageBloc, MainPageState>(builder: (context, state) {
-      return SafeArea(
-        child: Scaffold(
-          body: Stack(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: GridView.builder(
-                  controller: _scrollController,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: AppSize.size8,
-                    childAspectRatio: AppScale.scale1,
+    return BlocBuilder<MainPageBloc, MainPageState>(
+      builder: (context, state) {
+        return SafeArea(
+          child: Scaffold(
+            body: Stack(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: AppPadding.padding10,
                   ),
-                  itemCount: state.isEndOfList
-                      ? state.photos.length
-                      : state.photos.length + 1,
-                  itemBuilder: (_, int index) {
-                    if (index >= state.photos.length) {
-                      return const SizedBox();
-                    } else {
-                      return PhotoTile(
-                        photo: state.photos.elementAt(index),
-                        onTap: () {
-                          final MainPageBloc bloc = context.read<MainPageBloc>();
-                          context.navigateTo(
-                              DetailedPhotoRoute(
-                                bloc: bloc,
-                                photo: state.photos[index],
-                              ),
+                  child: PhotoGrid(
+                    photos: state.photos,
+                    isLoading: state.isLoading,
+                    isEndOfList: state.isEndOfList,
+                    onLoadMore: () {
+                      context.read<MainPageBloc>().add(
+                            GetTrendingPhotosNextPageEvent(),
                           );
-                        },
+                    },
+                    onPhotoTap: (Photo photo) {
+                      context.navigateTo(
+                        DetailedPhotoRoute(photo: photo),
                       );
-                    }
-                  },
+                    },
+                  ),
                 ),
-              ),
-              if (state.isLoading)
-                const Center(
-                  child: CircularProgressIndicator(),
-                ),
-            ],
+                if (state.isLoading)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
