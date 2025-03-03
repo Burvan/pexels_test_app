@@ -16,9 +16,9 @@ class PhotoRepositoryImpl implements PhotoRepository {
         _photoService = photoService;
 
   @override
-  Future<List<Photo>> getTrendingPhotos({int page = 0}) async {
+  Future<List<Photo>> getTrendingPhotos(FetchPhotosParams params) async {
     final List<PhotoEntity> photos =
-        await _apiProvider.fetchTrendingPhotos(page: page);
+        await _apiProvider.fetchTrendingPhotos(params);
     return photos
         .map(
           (PhotoEntity entity) => mapper.photoMapper.fromEntity(entity),
