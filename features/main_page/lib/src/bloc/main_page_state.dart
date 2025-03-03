@@ -6,7 +6,6 @@ class MainPageState extends Equatable {
   final bool isLoading;
   final bool isEndOfList;
   final String? errorMessage;
-  final bool isPhotoSaved;
 
   const MainPageState({
     required this.photos,
@@ -14,7 +13,6 @@ class MainPageState extends Equatable {
     required this.isLoading,
     required this.isEndOfList,
     this.errorMessage,
-    this.isPhotoSaved = false,
   });
 
   const MainPageState.empty()
@@ -22,8 +20,7 @@ class MainPageState extends Equatable {
         currentPage = 1,
         isLoading = false,
         isEndOfList = false,
-        errorMessage = null,
-        isPhotoSaved = false;
+        errorMessage = null;
 
   MainPageState copyWith({
     List<Photo>? photos,
@@ -31,7 +28,6 @@ class MainPageState extends Equatable {
     bool? isLoading,
     bool? isEndOfList,
     String? errorMessage,
-    bool? isPhotoSaved,
   }) {
     return MainPageState(
       photos: photos ?? this.photos,
@@ -39,7 +35,6 @@ class MainPageState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       isEndOfList: isEndOfList ?? this.isEndOfList,
       errorMessage: errorMessage ?? this.errorMessage,
-      isPhotoSaved: isPhotoSaved ?? this.isPhotoSaved,
     );
   }
 
@@ -50,6 +45,5 @@ class MainPageState extends Equatable {
         isLoading,
         isEndOfList,
         errorMessage,
-        isPhotoSaved,
       ];
 }
