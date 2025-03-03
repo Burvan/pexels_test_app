@@ -17,6 +17,8 @@ dependencies:
     path: ../../core_ui
   core:
     path: ../../core
+  domain:
+    path: ../../domain
   main_page:
     path: ../../features/main_page
   settings_page:

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:main_page/src/bloc/main_page_bloc.dart';
+import 'package:home/home.dart';
 import 'package:navigation/navigation.dart';
 import 'package:domain/domain.dart';
 import 'package:core_ui/core_ui.dart';
@@ -8,20 +8,21 @@ import 'package:core/core.dart';
 @RoutePage()
 class DetailedPhotoScreen extends StatelessWidget {
   final Photo photo;
-  final MainPageBloc bloc;
 
   const DetailedPhotoScreen({
     super.key,
-    required this.bloc,
     required this.photo,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: bloc,
-      child: BlocListener<MainPageBloc, MainPageState>(
-        listener: (BuildContext context, MainPageState state) {
+    return BlocProvider(
+      create: (_) => PhotoActionBloc(
+        savePhotoToGalleryUseCase: appLocator.get<SavePhotoToGalleryUseCase>(),
+        sharePhotoUseCase: appLocator.get<SharePhotoUseCase>(),
+      ),
+      child: BlocListener<PhotoActionBloc, PhotoActionsState>(
+        listener: (BuildContext context, PhotoActionsState state) {
           if (state.isPhotoSaved) {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(
@@ -34,7 +35,7 @@ class DetailedPhotoScreen extends StatelessWidget {
                 duration: Duration(seconds: 3),
               ),
             );
-            bloc.add(const ResetPhotoSavedEvent());
+            context.read<PhotoActionBloc>().add(const ResetPhotoSavedEvent());
           }
         },
         child: SafeArea(
@@ -60,33 +61,37 @@ class DetailedPhotoScreen extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: <Widget>[
-                      CustomIconButton(
-                        onPressed: () async {
-                          if (await Permission.storage.request().isGranted) {
-                            bloc.add(
-                              SavePhotoToGalleryEvent(
-                                photoUrl: photo.src.large,
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(AppConstants.permissionDenied),
-                              ),
-                            );
-                          }
-                        },
-                        icon: Icon(Icons.save_alt),
-                      ),
+                      Builder(builder: (BuildContext context) {
+                        return CustomIconButton(
+                          onPressed: () async {
+                            if (await Permission.storage.request().isGranted) {
+                              context.read<PhotoActionBloc>().add(
+                                    SavePhotoToGalleryEvent(
+                                      photoUrl: photo.src.large,
+                                    ),
+                                  );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(AppConstants.permissionDenied),
+                                ),
+                              );
+                            }
+                          },
+                          icon: Icon(Icons.save_alt),
+                        );
+                      }),
                       SizedBox(width: AppSize.size8),
-                      CustomIconButton(
-                        onPressed: () async {
-                          bloc.add(
-                            SharePhotoEvent(photoUrl: photo.src.large),
-                          );
-                        },
-                        icon: Icon(Icons.share),
-                      ),
+                      Builder(builder: (BuildContext context) {
+                        return CustomIconButton(
+                          onPressed: () async {
+                            context.read<PhotoActionBloc>().add(
+                                  SharePhotoEvent(photoUrl: photo.src.large),
+                                );
+                          },
+                          icon: Icon(Icons.share),
+                        );
+                      }),
                     ],
                   ),
                 ),

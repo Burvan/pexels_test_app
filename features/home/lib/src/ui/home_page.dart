@@ -15,8 +15,8 @@ class HomePage extends StatelessWidget {
     return AutoTabsScaffold(
       routes: const <PageRouteInfo>[
         MainRoute(),
-        SettingsRoute(),
         SearchRoute(),
+        SettingsRoute(),
       ],
       appBarBuilder: (_, TabsRouter tabsRouter) {
         return AppBar(
