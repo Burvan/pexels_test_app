@@ -1,5 +1,4 @@
 import 'package:data/data.dart';
-import 'package:data/entities/search/search_request_entity.dart';
 import 'package:domain/domain.dart';
 
 class SearchHistoryRepositoryImpl implements SearchHistoryRepository {
