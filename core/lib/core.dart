@@ -4,6 +4,8 @@ export 'package:dio/dio.dart';
 export 'package:flutter_bloc/flutter_bloc.dart';
 export 'package:equatable/equatable.dart';
 export 'package:permission_handler/permission_handler.dart';
+export 'package:hive/hive.dart';
+export 'package:hive_flutter/hive_flutter.dart';
 
 export 'errors/errors.dart';
 export 'constants/app_constants.dart';
