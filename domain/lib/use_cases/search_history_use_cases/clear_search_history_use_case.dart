@@ -1,5 +1,4 @@
 import 'package:domain/domain.dart';
-import 'package:domain/repositories/search_history_repository.dart';
 
 class ClearSearchHistoryUseCase implements FutureUseCase<void, NoParams> {
   final SearchHistoryRepository _searchHistoryRepository;

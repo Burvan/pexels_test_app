@@ -1,6 +1,4 @@
 import 'package:domain/domain.dart';
-import 'package:domain/models/search/search_request.dart';
-import 'package:domain/repositories/search_history_repository.dart';
 
 class GetSearchHistoryUseCase
     implements FutureUseCase<List<SearchRequest>, NoParams> {
