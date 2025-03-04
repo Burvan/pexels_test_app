@@ -3,7 +3,7 @@ import 'package:data/data.dart';
 
 
 class HiveProvider {
-  static const int maxHistoryLength = 3;
+  static const int maxHistoryLength = 8;
 
   Future<List<SearchRequestEntity>> getSearchHistory() async {
     final Box<SearchRequestEntity> searchHistoryBox =
@@ -28,6 +28,17 @@ class HiveProvider {
     final Box<SearchRequestEntity> searchHistoryBox =
         await Hive.openBox('history');
 
+    final existingEntries = searchHistoryBox.values
+        .where((entry) => entry.query == query)
+        .toList();
+
+    for (var entry in existingEntries) {
+      final key = searchHistoryBox.keyAt(
+        searchHistoryBox.values.toList().indexOf(entry),
+      );
+      await searchHistoryBox.delete(key);
+    }
+
     final SearchRequestEntity searchRequest = SearchRequestEntity(
       query: query,
       queryTime: DateTime.now(),
@@ -36,8 +47,8 @@ class HiveProvider {
     await searchHistoryBox.add(searchRequest);
 
     if (searchHistoryBox.length > maxHistoryLength) {
-      final SearchRequestEntity oldestRequest = searchHistoryBox.keyAt(0);
-      await searchHistoryBox.delete(oldestRequest);
+      final  oldestKey = searchHistoryBox.keyAt(0)!;
+      await searchHistoryBox.delete(oldestKey);
     }
 
     await searchHistoryBox.close();
