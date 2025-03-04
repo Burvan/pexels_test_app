@@ -1,4 +1,3 @@
-import 'package:core/constants/app_constants.dart';
 import 'package:core/core.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,8 @@ class CustomSearchField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onSubmitted;
   final FocusNode focusNode;
-  final void Function() onPressed;
+  final VoidCallback onPressed;
+  final VoidCallback onTap;
 
   const CustomSearchField({
     super.key,
@@ -15,6 +15,7 @@ class CustomSearchField extends StatelessWidget {
     required this.onSubmitted,
     required this.focusNode,
     required this.onPressed,
+    required this.onTap,
   });
 
   @override
@@ -76,6 +77,7 @@ class CustomSearchField extends StatelessWidget {
             ),
           ),
         ),
+        onTap: onTap,
         inputFormatters: [
           SearchPhotosFormatter(),
         ],
