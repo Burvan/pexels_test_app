@@ -12,7 +12,7 @@ class DataDI {
     );
 
     appLocator.registerLazySingleton<Dio>(
-          () => Dio(),
+      () => Dio(),
     );
 
     appLocator.registerLazySingleton<DioErrorHandler>(
@@ -26,6 +26,18 @@ class DataDI {
       ),
     );
 
+    ///Adapters
+    appLocator.registerLazySingleton<SearchRequestEntityAdapter>(
+          () => SearchRequestEntityAdapter(),
+    );
+
+    ///Hive
+    await Hive.initFlutter();
+
+    Hive.registerAdapter(
+      appLocator.get<SearchRequestEntityAdapter>(),
+    );
+
     ///Providers
     appLocator.registerLazySingleton<ApiProvider>(
       () => ApiProvider(
@@ -34,12 +46,23 @@ class DataDI {
       ),
     );
 
+    appLocator.registerLazySingleton<HiveProvider>(
+      () => HiveProvider(),
+    );
+
     ///Repositories
     appLocator.registerLazySingleton<PhotoRepository>(
       () => PhotoRepositoryImpl(
         apiProvider: appLocator.get<ApiProvider>(),
         mapper: appLocator.get<MapperFactory>(),
         photoService: appLocator.get<PhotoService>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<SearchHistoryRepository>(
+      () => SearchHistoryRepositoryImpl(
+        mapper: appLocator.get<MapperFactory>(),
+        hiveProvider: appLocator.get<HiveProvider>(),
       ),
     );
 
@@ -59,6 +82,24 @@ class DataDI {
     appLocator.registerLazySingleton<SharePhotoUseCase>(
       () => SharePhotoUseCase(
         photoRepository: appLocator.get<PhotoRepository>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<AddRequestToHistoryUseCase>(
+      () => AddRequestToHistoryUseCase(
+        searchHistoryRepository: appLocator.get<SearchHistoryRepository>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<GetSearchHistoryUseCase>(
+      () => GetSearchHistoryUseCase(
+        searchHistoryRepository: appLocator.get<SearchHistoryRepository>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<ClearSearchHistoryUseCase>(
+      () => ClearSearchHistoryUseCase(
+        searchHistoryRepository: appLocator.get<SearchHistoryRepository>(),
       ),
     );
   }
