@@ -5,6 +5,7 @@ class SearchState extends Equatable {
   final bool isLoading;
   final bool isEndOfList;
   final int currentPage;
+  final List<SearchRequest> searchHistory;
   final String? errorMessage;
   final String? query;
 
@@ -13,6 +14,7 @@ class SearchState extends Equatable {
     required this.isLoading,
     required this.isEndOfList,
     required this.currentPage,
+    required this.searchHistory,
     this.errorMessage,
     this.query,
   });
@@ -22,6 +24,7 @@ class SearchState extends Equatable {
         isLoading = false,
         isEndOfList = false,
         currentPage = 1,
+        searchHistory = const <SearchRequest>[],
         errorMessage = null,
         query = null;
 
@@ -30,6 +33,7 @@ class SearchState extends Equatable {
     bool? isLoading,
     bool? isEndOfList,
     int? currentPage,
+    List<SearchRequest>? searchHistory,
     String? errorMessage,
     String? query,
   }) {
@@ -38,6 +42,7 @@ class SearchState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       isEndOfList: isEndOfList ?? this.isEndOfList,
       currentPage: currentPage ?? this.currentPage,
+      searchHistory: searchHistory ?? this.searchHistory,
       errorMessage: errorMessage ?? this.errorMessage,
       query: query ?? this.query,
     );
@@ -49,6 +54,7 @@ class SearchState extends Equatable {
         isLoading,
         isEndOfList,
         currentPage,
+        searchHistory,
         errorMessage,
         query,
       ];

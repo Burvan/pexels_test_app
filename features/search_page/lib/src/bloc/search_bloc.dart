@@ -6,11 +6,23 @@ part 'search_state.dart';
 
 class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final GetTrendingPhotosUseCase _getTrendingPhotosUseCase;
+  final AddRequestToHistoryUseCase _addRequestToHistoryUseCase;
+  final GetSearchHistoryUseCase _getSearchHistoryUseCase;
+  final ClearSearchHistoryUseCase _clearSearchHistoryUseCase;
+
   SearchBloc({
     required GetTrendingPhotosUseCase getTrendingPhotosUseCase,
+    required AddRequestToHistoryUseCase addRequestToHistoryUseCase,
+    required GetSearchHistoryUseCase getSearchHistoryUseCase,
+    required ClearSearchHistoryUseCase clearSearchHistoryUseCase,
   })  : _getTrendingPhotosUseCase = getTrendingPhotosUseCase,
+        _addRequestToHistoryUseCase = addRequestToHistoryUseCase,
+        _getSearchHistoryUseCase = getSearchHistoryUseCase,
+        _clearSearchHistoryUseCase = clearSearchHistoryUseCase,
         super(const SearchState.empty()) {
     on<SearchPhotosEvent>(_onSearchPhotos);
+    on<LoadSearchHistoryEvent>(_onLoadSearchHistory);
+    on<ClearHistoryEvent>(_onClearHistory);
   }
 
   Future<void> _onSearchPhotos(
@@ -18,6 +30,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     Emitter<SearchState> emit,
   ) async {
     if (event.query != state.query) {
+      await _addRequestToHistoryUseCase.execute(event.query);
+
       emit(
         state.copyWith(
           photos: <Photo>[],
@@ -57,6 +71,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           isEndOfList: photos.isEmpty,
         ),
       );
+      print(state.photos.length);
     } on ApiException catch (_) {
       emit(
         state.copyWith(
@@ -72,5 +87,28 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
         ),
       );
     }
+  }
+
+  Future<void> _onLoadSearchHistory(
+    LoadSearchHistoryEvent event,
+    Emitter<SearchState> emit,
+  ) async {
+    final List<SearchRequest> searchHistory =
+        await _getSearchHistoryUseCase.execute(const NoParams());
+
+    emit(
+      state.copyWith(searchHistory: searchHistory),
+    );
+  }
+
+  Future<void> _onClearHistory(
+      ClearHistoryEvent event,
+      Emitter<SearchState> emit,
+      ) async {
+    await _clearSearchHistoryUseCase.execute(const NoParams());
+
+    emit(
+      state.copyWith(searchHistory: <SearchRequest>[]),
+    );
   }
 }

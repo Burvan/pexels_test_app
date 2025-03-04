@@ -14,3 +14,11 @@ class SearchPhotosEvent extends SearchEvent {
   const SearchPhotosEvent({required this.query});
 }
 
+class LoadSearchHistoryEvent extends SearchEvent {
+  const LoadSearchHistoryEvent();
+}
+
+class ClearHistoryEvent extends SearchEvent {
+  const ClearHistoryEvent();
+}
+
