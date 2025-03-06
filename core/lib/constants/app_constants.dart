@@ -11,4 +11,7 @@ class AppConstants {
   static const String permissionDenied = 'Permission denied';
   static const String search = 'Search';
   static const String noResultsFound = 'No results found';
+  static const String noInternetFlushbar =
+      'No internet connection. Displaying cached data';
+  static const String googleUrl = 'https://www.google.com';
 }
