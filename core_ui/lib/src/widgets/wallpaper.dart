@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -17,9 +18,16 @@ class Wallpaper extends StatelessWidget {
       tag: id,
       child: AspectRatio(
         aspectRatio: AppScale.scale1,
-        child: Image.network(
-          photoPath,
+        child: CachedNetworkImage(
+          imageUrl: photoPath,
+          cacheKey: photoPath.split('?').first,
           fit: BoxFit.cover,
+          placeholder: (context, url) => const SizedBox.shrink(),
+          errorWidget: (BuildContext context, String url, Object error) {
+            return Image.asset(
+              'assets/images/pexels_placeholder2.jpg',
+            );
+          },
         ),
       ),
     );

@@ -32,7 +32,7 @@ class PhotoTile extends StatelessWidget {
                       AppBorderRadius.borderRadius8,
                     ),
                     child: Wallpaper(
-                      photoPath: photo.src.medium,
+                      photoPath: photo.src.large,
                       id: photo.id,
                     ),
                   ),
