@@ -21,48 +21,47 @@ class DetailedPhotoScreen extends StatelessWidget {
         savePhotoToGalleryUseCase: appLocator.get<SavePhotoToGalleryUseCase>(),
         sharePhotoUseCase: appLocator.get<SharePhotoUseCase>(),
       ),
-      child: BlocListener<PhotoActionBloc, PhotoActionsState>(
+      child: BlocConsumer<PhotoActionBloc, PhotoActionsState>(
         listener: (BuildContext context, PhotoActionsState state) {
-          if (state.isPhotoSaved) {
+          if (state.snackBarMessage != AppConstants.defaultMessage) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                backgroundColor: AppColors.turquoise,
+              SnackBar(
+                backgroundColor:
+                    state.isPhotoSaved ? AppColors.turquoise : AppColors.red,
                 content: Text(
-                  textAlign: TextAlign.center,
-                  AppConstants.successfulPhotoSaving,
+                  state.snackBarMessage,
                   style: AppTextTheme.font19WhiteBold,
+                  textAlign: TextAlign.center,
                 ),
-                duration: Duration(seconds: 3),
+                duration: const Duration(seconds: 3),
               ),
             );
             context.read<PhotoActionBloc>().add(const ResetPhotoSavedEvent());
           }
         },
-        child: SafeArea(
-          child: Scaffold(
-            appBar: AppBar(
-              centerTitle: true,
-              title: Text(
-                '${AppConstants.photoBy}${photo.photographer ?? AppConstants.unknownPhotographer}',
-                style: AppTextTheme.font19Bold,
-              ),
-              backgroundColor: AppColors.turquoise,
-            ),
-            body: Stack(
-              children: <Widget>[
-                SelectedWallpaper(
-                  id: photo.id,
-                  photoPath: photo.src.large,
+        builder: (context, state) {
+          return SafeArea(
+            child: Scaffold(
+              appBar: AppBar(
+                centerTitle: true,
+                title: Text(
+                  '${AppConstants.photoBy}${photo.photographer ?? AppConstants.unknownPhotographer}',
+                  style: AppTextTheme.font19Bold,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(
-                    AppPadding.padding10,
+                backgroundColor: AppColors.turquoise,
+              ),
+              body: Stack(
+                children: <Widget>[
+                  SelectedWallpaper(
+                    id: photo.id,
+                    photoPath: photo.src.large,
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Builder(builder: (BuildContext context) {
-                        return CustomIconButton(
+                  Padding(
+                    padding: const EdgeInsets.all(AppPadding.padding10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        CustomIconButton(
                           onPressed: () async {
                             if (await Permission.storage.request().isGranted) {
                               context.read<PhotoActionBloc>().add(
@@ -79,40 +78,38 @@ class DetailedPhotoScreen extends StatelessWidget {
                             }
                           },
                           icon: Icon(Icons.save_alt),
-                        );
-                      }),
-                      SizedBox(width: AppSize.size8),
-                      Builder(builder: (BuildContext context) {
-                        return CustomIconButton(
+                        ),
+                        SizedBox(width: AppSize.size8),
+                        CustomIconButton(
                           onPressed: () async {
                             context.read<PhotoActionBloc>().add(
                                   SharePhotoEvent(photoUrl: photo.src.large),
                                 );
                           },
                           icon: Icon(Icons.share),
-                        );
-                      }),
-                    ],
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    vertical: AppPadding.padding5,
-                    horizontal: AppPadding.padding20,
-                  ),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Text(
-                      photo.alt ?? AppConstants.noDescription,
-                      style: AppTextTheme.font16TurquoiseBold,
-                      textAlign: TextAlign.center,
+                        ),
+                      ],
                     ),
                   ),
-                ),
-              ],
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: AppPadding.padding5,
+                      horizontal: AppPadding.padding20,
+                    ),
+                    child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        photo.alt ?? AppConstants.noDescription,
+                        style: AppTextTheme.font16TurquoiseBold,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

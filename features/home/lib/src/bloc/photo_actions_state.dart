@@ -1,31 +1,31 @@
 part of 'photo_actions_bloc.dart';
 
 class PhotoActionsState extends Equatable {
-  final String? errorMessage;
+  final String snackBarMessage;
   final bool isPhotoSaved;
 
   const PhotoActionsState({
-    this.errorMessage,
+    required this.snackBarMessage,
     this.isPhotoSaved = false,
   });
 
   const PhotoActionsState.empty()
-      : errorMessage = null,
+      : snackBarMessage = AppConstants.defaultMessage,
         isPhotoSaved = false;
 
   PhotoActionsState copyWith({
-    String? errorMessage,
+    String? snackBarMessage,
     bool? isPhotoSaved,
   }) {
     return PhotoActionsState(
-      errorMessage: errorMessage ?? this.errorMessage,
+      snackBarMessage: snackBarMessage ?? this.snackBarMessage,
       isPhotoSaved: isPhotoSaved ?? this.isPhotoSaved,
     );
   }
 
   @override
   List<Object?> get props => [
-    errorMessage,
+    snackBarMessage,
     isPhotoSaved,
   ];
 }

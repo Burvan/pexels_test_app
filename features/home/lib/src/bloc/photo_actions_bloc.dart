@@ -26,13 +26,16 @@ class PhotoActionBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
     try {
       await _savePhotoToGalleryUseCase.execute(event.photoUrl);
       emit(
-        state.copyWith(isPhotoSaved: true),
+        state.copyWith(
+          isPhotoSaved: true,
+          snackBarMessage: AppConstants.successfulPhotoSaving,
+        ),
       );
     } catch (e) {
       emit(
         state.copyWith(
-          errorMessage: 'Failed to save photo: $e',
           isPhotoSaved: false,
+          snackBarMessage: AppConstants.checkInternetConnection,
         ),
       );
     }
@@ -42,7 +45,9 @@ class PhotoActionBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
     ResetPhotoSavedEvent event,
     Emitter<PhotoActionsState> emit,
   ) {
-    emit(state.copyWith(isPhotoSaved: false));
+    emit(
+      const PhotoActionsState.empty(),
+    );
   }
 
   Future<void> _onSharePhoto(
@@ -54,7 +59,7 @@ class PhotoActionBloc extends Bloc<PhotoActionsEvent, PhotoActionsState> {
     } catch (e) {
       emit(
         state.copyWith(
-          errorMessage: 'Failed to share photo: $e',
+          snackBarMessage: AppConstants.checkInternetConnection,
         ),
       );
     }
