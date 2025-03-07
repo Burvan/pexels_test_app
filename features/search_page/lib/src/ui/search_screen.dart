@@ -20,6 +20,8 @@ class SearchScreen extends StatelessWidget {
         addRequestToHistoryUseCase:
             appLocator.get<AddRequestToHistoryUseCase>(),
         clearSearchHistoryUseCase: appLocator.get<ClearSearchHistoryUseCase>(),
+        checkInternetConnectionUseCase:
+            appLocator.get<CheckInternetConnectionUseCase>(),
       ),
       child: const _SearchScreen(),
     );
@@ -98,8 +100,8 @@ class _SearchScreenState extends State<_SearchScreen>
 
                         if (query.isNotEmpty) {
                           context.read<SearchBloc>().add(
-                            SearchPhotosEvent(query: query),
-                          );
+                                SearchPhotosEvent(query: query),
+                              );
                         }
                       },
                       onPressed: () {
@@ -107,8 +109,8 @@ class _SearchScreenState extends State<_SearchScreen>
 
                         if (query.isNotEmpty) {
                           context.read<SearchBloc>().add(
-                            SearchPhotosEvent(query: query),
-                          );
+                                SearchPhotosEvent(query: query),
+                              );
                         }
                       },
                       focusNode: searchFocusNode,
@@ -150,7 +152,7 @@ class _SearchScreenState extends State<_SearchScreen>
                                     state.query?.isNotEmpty == true)
                                 ? Center(
                                     child: Text(
-                                      AppConstants.noResultsFound,
+                                          state.errorMessage!,
                                       style: AppTextTheme.font16TurquoiseBold,
                                     ),
                                   )
