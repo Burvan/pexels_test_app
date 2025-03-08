@@ -10,6 +10,7 @@ part 'app_exceptions/network_exception.dart';
 part 'app_exceptions/photo_download_exception.dart';
 part 'app_exceptions/photo_save_exception.dart';
 part 'app_exceptions/photo_share_exception.dart';
+part 'app_exceptions/cache_is_empty_exception.dart';
 
 part 'app_exception.dart';
 part 'dio_error_handler.dart';

@@ -1,5 +1,4 @@
 import 'package:domain/domain.dart';
-import 'package:domain/models/params/fetchPhotosParams.dart';
 
 class GetTrendingPhotosUseCase
     implements FutureUseCase<List<Photo>, FetchPhotosParams> {

@@ -5,6 +5,7 @@ class MainPageState extends Equatable {
   final int currentPage;
   final bool isLoading;
   final bool isEndOfList;
+  final bool isInternet;
   final String? errorMessage;
 
   const MainPageState({
@@ -12,6 +13,7 @@ class MainPageState extends Equatable {
     required this.currentPage,
     required this.isLoading,
     required this.isEndOfList,
+    required this.isInternet,
     this.errorMessage,
   });
 
@@ -20,6 +22,7 @@ class MainPageState extends Equatable {
         currentPage = 1,
         isLoading = false,
         isEndOfList = false,
+        isInternet = true,
         errorMessage = null;
 
   MainPageState copyWith({
@@ -27,6 +30,7 @@ class MainPageState extends Equatable {
     int? currentPage,
     bool? isLoading,
     bool? isEndOfList,
+    bool? isInternet,
     String? errorMessage,
   }) {
     return MainPageState(
@@ -34,6 +38,7 @@ class MainPageState extends Equatable {
       currentPage: currentPage ?? this.currentPage,
       isLoading: isLoading ?? this.isLoading,
       isEndOfList: isEndOfList ?? this.isEndOfList,
+      isInternet: isInternet ?? this.isInternet,
       errorMessage: errorMessage ?? this.errorMessage,
     );
   }
@@ -44,6 +49,7 @@ class MainPageState extends Equatable {
         currentPage,
         isLoading,
         isEndOfList,
+        isInternet,
         errorMessage,
       ];
 }

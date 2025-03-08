@@ -9,16 +9,19 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   final AddRequestToHistoryUseCase _addRequestToHistoryUseCase;
   final GetSearchHistoryUseCase _getSearchHistoryUseCase;
   final ClearSearchHistoryUseCase _clearSearchHistoryUseCase;
+  final CheckInternetConnectionUseCase _checkInternetConnectionUseCase;
 
   SearchBloc({
     required GetTrendingPhotosUseCase getTrendingPhotosUseCase,
     required AddRequestToHistoryUseCase addRequestToHistoryUseCase,
     required GetSearchHistoryUseCase getSearchHistoryUseCase,
     required ClearSearchHistoryUseCase clearSearchHistoryUseCase,
+    required CheckInternetConnectionUseCase checkInternetConnectionUseCase,
   })  : _getTrendingPhotosUseCase = getTrendingPhotosUseCase,
         _addRequestToHistoryUseCase = addRequestToHistoryUseCase,
         _getSearchHistoryUseCase = getSearchHistoryUseCase,
         _clearSearchHistoryUseCase = clearSearchHistoryUseCase,
+        _checkInternetConnectionUseCase = checkInternetConnectionUseCase,
         super(const SearchState.empty()) {
     on<SearchPhotosEvent>(_onSearchPhotos);
     on<LoadSearchHistoryEvent>(_onLoadSearchHistory);
@@ -29,6 +32,8 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     SearchPhotosEvent event,
     Emitter<SearchState> emit,
   ) async {
+    emit(state.copyWith(errorMessage: null));
+
     if (event.query != state.query) {
       await _addRequestToHistoryUseCase.execute(event.query);
 
@@ -39,6 +44,7 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           currentPage: 1,
           isLoading: true,
           isEndOfList: false,
+          errorMessage: null,
         ),
       );
     } else if (state.isEndOfList || state.isLoading) {
@@ -52,12 +58,38 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
     }
 
     try {
+      final bool isInternetConnection =
+      await _checkInternetConnectionUseCase.execute(
+        NoParams(),
+      );
+
+      if (!isInternetConnection) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            photos: <Photo>[],
+            errorMessage: AppConstants.noInternetConnection,
+          ),
+        );
+        return;
+      }
+
       List<Photo> photos = await _getTrendingPhotosUseCase.execute(
         FetchPhotosParams(
           page: state.currentPage,
           query: event.query,
         ),
       );
+
+      if (photos.isEmpty && !state.isEndOfList) {
+        emit(
+          state.copyWith(
+            isLoading: false,
+            photos: <Photo>[],
+            errorMessage: AppConstants.noResultsFound,
+          ),
+        );
+      }
 
       final Set<int> uniqueIds = state.photos.map((photo) => photo.id).toSet();
       final List<Photo> newPhotos =
@@ -71,19 +103,18 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
           isEndOfList: photos.isEmpty,
         ),
       );
-      print(state.photos.length);
-    } on ApiException catch (_) {
+    } on ApiException catch (e) {
       emit(
         state.copyWith(
           isLoading: false,
-          errorMessage: 'No such photos',
+          errorMessage: e.message,
         ),
       );
     } catch (e) {
       emit(
         state.copyWith(
           isLoading: false,
-          errorMessage: 'An unexpected error occurred',
+          errorMessage: AppConstants.unexpectedError,
         ),
       );
     }
@@ -102,9 +133,9 @@ class SearchBloc extends Bloc<SearchEvent, SearchState> {
   }
 
   Future<void> _onClearHistory(
-      ClearHistoryEvent event,
-      Emitter<SearchState> emit,
-      ) async {
+    ClearHistoryEvent event,
+    Emitter<SearchState> emit,
+  ) async {
     await _clearSearchHistoryUseCase.execute(const NoParams());
 
     emit(

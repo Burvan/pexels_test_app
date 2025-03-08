@@ -26,9 +26,23 @@ class DataDI {
       ),
     );
 
+    appLocator.registerLazySingleton<InternetConnectionService>(
+      () => InternetConnectionService(
+        dio: appLocator.get<Dio>(),
+      ),
+    );
+
     ///Adapters
     appLocator.registerLazySingleton<SearchRequestEntityAdapter>(
-          () => SearchRequestEntityAdapter(),
+      () => SearchRequestEntityAdapter(),
+    );
+
+    appLocator.registerLazySingleton<PhotoEntityAdapter>(
+      () => PhotoEntityAdapter(),
+    );
+
+    appLocator.registerLazySingleton<SrcEntityAdapter>(
+      () => SrcEntityAdapter(),
     );
 
     ///Hive
@@ -36,6 +50,14 @@ class DataDI {
 
     Hive.registerAdapter(
       appLocator.get<SearchRequestEntityAdapter>(),
+    );
+
+    Hive.registerAdapter(
+      appLocator.get<PhotoEntityAdapter>(),
+    );
+
+    Hive.registerAdapter(
+      appLocator.get<SrcEntityAdapter>(),
     );
 
     ///Providers
@@ -54,8 +76,10 @@ class DataDI {
     appLocator.registerLazySingleton<PhotoRepository>(
       () => PhotoRepositoryImpl(
         apiProvider: appLocator.get<ApiProvider>(),
+        hiveProvider: appLocator.get<HiveProvider>(),
         mapper: appLocator.get<MapperFactory>(),
         photoService: appLocator.get<PhotoService>(),
+        internetConnectionService: appLocator.get<InternetConnectionService>(),
       ),
     );
 
@@ -100,6 +124,12 @@ class DataDI {
     appLocator.registerLazySingleton<ClearSearchHistoryUseCase>(
       () => ClearSearchHistoryUseCase(
         searchHistoryRepository: appLocator.get<SearchHistoryRepository>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<CheckInternetConnectionUseCase>(
+      () => CheckInternetConnectionUseCase(
+        photoRepository: appLocator.get<PhotoRepository>(),
       ),
     );
   }

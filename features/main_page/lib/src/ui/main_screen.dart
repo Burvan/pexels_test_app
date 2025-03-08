@@ -14,8 +14,9 @@ class MainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<MainPageBloc>(
       create: (_) => MainPageBloc(
-        getTrendingPhotosUseCase: appLocator.get<GetTrendingPhotosUseCase>(),
-      ),
+          getTrendingPhotosUseCase: appLocator.get<GetTrendingPhotosUseCase>(),
+          internetConnectionService:
+              appLocator.get<InternetConnectionService>()),
       child: const _MainScreen(),
     );
   }
@@ -26,39 +27,61 @@ class _MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<MainPageBloc, MainPageState>(
+    return BlocConsumer<MainPageBloc, MainPageState>(
+      listenWhen: (MainPageState previous, MainPageState current) =>
+          previous.isInternet != current.isInternet,
+      listener: (_, MainPageState state) {
+        if (!state.isInternet) {
+          CustomFlushbar(
+            messageText: AppConstants.noInternetFlushbar,
+            color: AppColors.red,
+          ).show(context);
+        }
+      },
       builder: (context, state) {
-        return SafeArea(
-          child: Scaffold(
-            body: Stack(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppPadding.padding10,
-                  ),
-                  child: PhotoGrid(
-                    photos: state.photos,
-                    isLoading: state.isLoading,
-                    isEndOfList: state.isEndOfList,
-                    onLoadMore: () {
-                      context.read<MainPageBloc>().add(
-                            GetTrendingPhotosNextPageEvent(),
-                          );
-                    },
-                    onPhotoTap: (Photo photo) {
-                      context.navigateTo(
-                        DetailedPhotoRoute(photo: photo),
-                      );
-                    },
-                  ),
+        return BlocBuilder<MainPageBloc, MainPageState>(
+          builder: (context, state) {
+            return SafeArea(
+              child: Scaffold(
+                body: Stack(
+                  children: <Widget>[
+                    if (state.errorMessage != null)
+                      Center(
+                        child: Text(
+                          state.errorMessage!,
+                          style: AppTextTheme.font16TurquoiseBold,
+                        ),
+                      )
+                    else
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: AppPadding.padding10,
+                        ),
+                        child: PhotoGrid(
+                          photos: state.photos,
+                          isLoading: state.isLoading,
+                          isEndOfList: state.isEndOfList,
+                          onLoadMore: () {
+                            context.read<MainPageBloc>().add(
+                                  GetTrendingPhotosNextPageEvent(),
+                                );
+                          },
+                          onPhotoTap: (Photo photo) {
+                            context.navigateTo(
+                              DetailedPhotoRoute(photo: photo),
+                            );
+                          },
+                        ),
+                      ),
+                    if (state.isLoading)
+                      const Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                  ],
                 ),
-                if (state.isLoading)
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-              ],
-            ),
-          ),
+              ),
+            );
+          },
         );
       },
     );

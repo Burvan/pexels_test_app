@@ -12,3 +12,9 @@ class GetTrendingPhotosNextPageEvent extends MainPageEvent {
   const GetTrendingPhotosNextPageEvent();
 }
 
+class InternetStatusChangedEvent extends MainPageEvent {
+  final bool isInternet;
+
+  InternetStatusChangedEvent({required this.isInternet});
+}
+
