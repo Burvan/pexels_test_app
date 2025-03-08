@@ -90,6 +90,12 @@ class DataDI {
       ),
     );
 
+    appLocator.registerLazySingleton<SettingsRepository>(
+      () => SettingsRepositoryImpl(
+        hiveProvider: appLocator.get<HiveProvider>(),
+      ),
+    );
+
     ///UseCases
     appLocator.registerLazySingleton<GetTrendingPhotosUseCase>(
       () => GetTrendingPhotosUseCase(
@@ -130,6 +136,18 @@ class DataDI {
     appLocator.registerLazySingleton<CheckInternetConnectionUseCase>(
       () => CheckInternetConnectionUseCase(
         photoRepository: appLocator.get<PhotoRepository>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<GetThemeUseCase>(
+      () => GetThemeUseCase(
+        settingsRepository: appLocator.get<SettingsRepository>(),
+      ),
+    );
+
+    appLocator.registerLazySingleton<SetThemeUseCase>(
+      () => SetThemeUseCase(
+        settingsRepository: appLocator.get<SettingsRepository>(),
       ),
     );
   }
