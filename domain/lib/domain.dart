@@ -9,6 +9,7 @@ export 'models/search/search_request.dart';
 ///Repositories
 export 'repositories/photo_repository.dart';
 export 'repositories/search_history_repository.dart';
+export 'repositories/settings_repository.dart';
 
 ///UseCases
 export 'use_cases/use_case.dart';
@@ -19,3 +20,5 @@ export 'use_cases/search_history_use_cases/add_request_to_history_use_case.dart'
 export 'use_cases/search_history_use_cases/clear_search_history_use_case.dart';
 export 'use_cases/search_history_use_cases/get_search_history_use_case.dart';
 export 'use_cases/internet_connection_use_cases/check_internet_connection_use_case.dart';
+export 'use_cases/settings_use_cases/get_theme_use_case.dart';
+export 'use_cases/settings_use_cases/set_theme_use_case.dart';

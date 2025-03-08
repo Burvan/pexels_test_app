@@ -13,6 +13,7 @@ dependencies:
   google_nav_bar: ^5.0.7
   cached_network_image: ^3.4.1
   another_flushbar: ^1.12.30
+  animated_text_kit: ^4.2.2
   
   core:
     path: ../core
