@@ -13,3 +13,4 @@ export 'src/widgets/photo_grid.dart';
 export 'src/widgets/photo_tile.dart';
 export 'src/widgets/custom_search_field.dart';
 export 'src/widgets/custom_flushbar.dart';
+export 'src/widgets/animated_text.dart';

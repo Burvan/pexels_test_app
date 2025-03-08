@@ -151,9 +151,8 @@ class _SearchScreenState extends State<_SearchScreen>
                             : (state.photos.isEmpty &&
                                     state.query?.isNotEmpty == true)
                                 ? Center(
-                                    child: Text(
-                                          state.errorMessage!,
-                                      style: AppTextTheme.font16TurquoiseBold,
+                                    child: AnimatedText(
+                                      text: state.errorMessage!,
                                     ),
                                   )
                                 : Padding(
