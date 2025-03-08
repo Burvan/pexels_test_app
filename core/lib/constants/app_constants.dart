@@ -19,4 +19,9 @@ class AppConstants {
   static const String googleUrl = 'https://www.google.com';
   static const String noInternetConnection = 'No internet connection';
   static const String unexpectedError = 'An unexpected error occurred';
+
+  ///BoxName
+  static const String photoBox = 'photos';
+  static const String themeBox = 'theme';
+  static const String searchHistoryBox = 'history';
 }

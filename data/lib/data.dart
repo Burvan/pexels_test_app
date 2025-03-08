@@ -8,3 +8,4 @@ export 'package:data/repositories/search_history_repository_impl.dart';
 export 'package:data/entities/search/search_request_entity.dart';
 export 'package:data/entities/photo/photo_entity.dart';
 export 'package:data/entities/photo/src_entity.dart';
+export 'package:data/repositories/settings_repository_impl.dart';
