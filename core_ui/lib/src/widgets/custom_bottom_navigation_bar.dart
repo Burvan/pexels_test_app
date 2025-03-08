@@ -15,6 +15,8 @@ class AppBottomNavigationBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     return Container(
       color: AppColors.transparent,
       child: Padding(
@@ -24,7 +26,7 @@ class AppBottomNavigationBar extends StatelessWidget {
         child: GNav(
           selectedIndex: selectedIndex,
           onTabChange: onTabChange,
-          tabBackgroundColor: AppColors.turquoise,
+          tabBackgroundColor: themeData.focusColor,
           mainAxisAlignment: MainAxisAlignment.center,
           tabBorderRadius: AppBorderRadius.borderRadius30,
           tabs: BottomNavigationTabs.values

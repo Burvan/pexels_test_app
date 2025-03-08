@@ -183,7 +183,7 @@ packages:
     source: hosted
     version: "2.1.1"
   domain:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: domain
       relative: true
@@ -372,7 +372,7 @@ packages:
     source: hosted
     version: "5.1.1"
   main_page:
-    dependency: "direct main"
+    dependency: transitive
     description:
       path: "features/main_page"
       relative: true
@@ -593,7 +593,7 @@ packages:
     source: path
     version: "0.0.1"
   settings_page:
-    dependency: transitive
+    dependency: "direct main"
     description:
       path: "features/settings_page"
       relative: true

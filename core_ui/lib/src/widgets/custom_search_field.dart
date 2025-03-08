@@ -26,44 +26,7 @@ class CustomSearchField extends StatelessWidget {
         controller: controller,
         focusNode: focusNode,
         decoration: InputDecoration(
-          contentPadding: EdgeInsets.only(left: AppPadding.padding20),
           label: Text(AppConstants.search),
-          border: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: AppColors.lightGrey,
-              width: AppSize.size2,
-            ),
-            borderRadius: BorderRadius.circular(
-              AppBorderRadius.borderRadius30,
-            ),
-          ),
-          enabledBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: AppColors.lightGrey,
-              width: AppSize.size2,
-            ),
-            borderRadius: BorderRadius.circular(
-              AppBorderRadius.borderRadius30,
-            ),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: AppColors.turquoise,
-              width: AppSize.size2,
-            ),
-            borderRadius: BorderRadius.circular(
-              AppBorderRadius.borderRadius30,
-            ),
-          ),
-          errorBorder: OutlineInputBorder(
-            borderSide: const BorderSide(
-              color: AppColors.red,
-              width: AppSize.size2,
-            ),
-            borderRadius: BorderRadius.circular(
-              AppBorderRadius.borderRadius30,
-            ),
-          ),
           suffixIcon: Padding(
             padding: EdgeInsets.only(right: AppPadding.padding5),
             child: IconButton(

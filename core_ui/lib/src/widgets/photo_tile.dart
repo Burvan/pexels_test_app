@@ -18,7 +18,6 @@ class PhotoTile extends StatelessWidget {
       children: <Widget>[
         Center(
           child: Card(
-            elevation: AppSize.size4,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(
                 AppBorderRadius.borderRadius8,

@@ -48,7 +48,6 @@ class DetailedPhotoScreen extends StatelessWidget {
                   '${AppConstants.photoBy}${photo.photographer ?? AppConstants.unknownPhotographer}',
                   style: AppTextTheme.font19Bold,
                 ),
-                backgroundColor: AppColors.turquoise,
               ),
               body: Stack(
                 children: <Widget>[

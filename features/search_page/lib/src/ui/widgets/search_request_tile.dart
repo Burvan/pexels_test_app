@@ -13,6 +13,8 @@ class SearchRequestTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.symmetric(
         horizontal: AppPadding.padding20,
@@ -30,7 +32,7 @@ class SearchRequestTile extends StatelessWidget {
               borderRadius: BorderRadius.circular(
                 AppBorderRadius.borderRadius30,
               ),
-              color: AppColors.turquoiseWithOpacity,
+              color: themeData.secondaryHeaderColor,
             ),
             padding: const EdgeInsets.symmetric(
               horizontal: AppPadding.padding20,
