@@ -13,6 +13,8 @@ class CustomFlushbar extends StatelessWidget {
   });
 
   void show(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     Flushbar(
       messageText: Text(
         messageText,
@@ -21,7 +23,7 @@ class CustomFlushbar extends StatelessWidget {
           color: color,
         ),
       ),
-      backgroundColor: AppColors.turquoise,
+      backgroundColor: themeData.focusColor,
       flushbarPosition: FlushbarPosition.TOP,
       padding: const EdgeInsets.all(AppPadding.padding20),
       duration: const Duration(seconds: 3),
